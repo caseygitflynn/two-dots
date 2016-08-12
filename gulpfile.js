@@ -15,7 +15,6 @@ gulp.task("build-app", function (){
 
 // Watch Files For Changes
 gulp.task('watch', function() {
-  livereload.listen();
   gulp.watch('frontend/js/**/*.js', ['build-app']);
 });
 
