@@ -1,0 +1,25 @@
+{
+  "name": "two-dots",
+  "version": "1.0.0",
+  "description": "Two Dots Game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caseygitflynn/two-dots.git"
+  },
+  "author": "Casey Flynn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/caseygitflynn/two-dots/issues"
+  },
+  "homepage": "https://github.com/caseygitflynn/two-dots#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-include": "^2.3.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-watch": "^4.3.9"
+  }
+}
