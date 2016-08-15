@@ -37,7 +37,7 @@ TD.Grid.prototype.removeAllOfColor = function (color) {
   var self = this;
 
   this.eachItem(function (x, y, gridItem) {
-    if (gridItem.type = "DotItem" && gridItem.color == color) {
+    if (gridItem instanceof TD.DotItem && gridItem.color == color) {
       self.gridContents[x][y] = null;
     }
   });
@@ -59,11 +59,21 @@ TD.Grid.prototype.getEmptyCount = function () {
 
 TD.Grid.prototype.bubbleEmpty = function () {
   for (var x = 0; x < this.gridContents.length; x = x + 1) {
-    var column = this.gridContents[x];
     this.gridContents[x].sort(function (a, b) {
       return b === null ? 1 : 0;
     });
   }
+
+  this.updateItemPositions();
+};
+
+TD.Grid.prototype.fill = function (items) {
+  var self = this;
+  this.eachItem(function (x, y, gridItem) {
+    if (gridItem == null) {
+      self.gridContents[x][y] = items.pop();
+    }
+  });
 
   this.updateItemPositions();
 };

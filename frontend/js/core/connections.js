@@ -9,7 +9,7 @@ TD.Connections = function () {
 };
 
 TD.Connections.prototype.add = function (gridItem) {
-  if (gridItem.type !== "DotItem") {
+  if (!gridItem instanceof TD.DotItem) {
     return;
   }
 

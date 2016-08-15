@@ -15,13 +15,18 @@
   var input = new TD.Input(canvas);
 
   var gridContent = [];
-  var colors = [TD.COLORS.YELLOW, TD.COLORS.RED, TD.COLORS.GREEN, TD.COLORS.LIGHT_BLUE];
+  var randomizer = new TD.Randomizer([
+    new TD.DotItem(TD.COLORS.YELLOW),
+    new TD.DotItem(TD.COLORS.RED),
+    new TD.DotItem(TD.COLORS.GREEN),
+    new TD.DotItem(TD.COLORS.LIGHT_BLUE),
+  ]);
 
   for (var x = 0; x < 10; x = x + 1) {
     gridContent.push([]);
     for (var y = 0; y < 10; y = y + 1) {
-      if (x !== 0 && x !== 9 && y !== 0 && y !== 9) {
-        gridContent[x].push(new TD.DotItem(TD.Utils.arrayRandom(colors)));
+      if (x !== 0 && x !== 9 && y !== 9) {
+        gridContent[x].push(null);
       } else {
         gridContent[x].push(new TD.EmptyItem());
       }
@@ -29,6 +34,8 @@
   }
 
   var grid = new TD.Grid(gridContent);
+  grid.fill(randomizer.getItems(grid.getEmptyCount()));
+
   var connections = new TD.Connections();
 
   var update = function () {
@@ -44,7 +51,7 @@
           grid.removeItems(connections.getClears());
         }
 
-        console.log(grid.getEmptyCount());
+         grid.fill(randomizer.getItems(grid.getEmptyCount()));
       }
 
       connections.reset();

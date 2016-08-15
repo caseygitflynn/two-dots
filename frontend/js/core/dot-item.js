@@ -9,12 +9,9 @@ TD.COLORS = {
   RED : "#EB4B5D"
 };
 
-TD.DOT_ITEM = 1;
-
 TD.DotItem = function (color) {
   TD.AbstractGridItem.call(this);
   this.color = color;
-  this.connection = 1;
   this.type = "DotItem";
 };
 
@@ -30,10 +27,6 @@ TD.DotItem.prototype.draw = function (ctx) {
   ctx.restore();
 };
 
-TD.DotItem.prototype.connect = function (dotItem) {
-  this.connection = dotItem;
-};
-
-TD.DotItem.prototype.disconnect = function () {
-  this.connection = null;
+TD.DotItem.prototype.copy = function () {
+  return new TD.DotItem(this.color);
 };

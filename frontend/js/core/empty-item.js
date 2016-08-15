@@ -2,8 +2,6 @@
 
 var TD = TD || {};
 
-TD.EMPTY_ITEM = 0;
-
 TD.EmptyItem = function () {
   TD.AbstractGridItem.call(this);
   this.type = "EmptyItem";
@@ -16,4 +14,8 @@ TD.EmptyItem.prototype.draw = function (ctx) {
   ctx.save();
   // Do nothing
   ctx.restore();
+};
+
+TD.EmptyItem.prototype.copy = function () {
+  return new TD.EmptyItem();
 };

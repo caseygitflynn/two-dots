@@ -10,3 +10,7 @@ TD.AbstractGridItem = function () {
 TD.AbstractGridItem.prototype.draw = function (ctx) {
   throw new Error('GridItem must implement draw().');
 };
+
+TD.AbstractGridItem.prototype.copy = function () {
+  throw new Error('GridItem must implement copy().');
+};
