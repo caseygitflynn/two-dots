@@ -12,6 +12,7 @@ TD.COLORS = {
 TD.DotItem = function (color) {
   TD.AbstractGridItem.call(this);
   this.color = color;
+  this.connection = 1;
 };
 
 TD.DotItem.prototype = Object.create(TD.AbstractGridItem.prototype);
@@ -24,4 +25,12 @@ TD.DotItem.prototype.draw = function (ctx) {
   ctx.fillStyle = this.color;
   ctx.fill();
   ctx.restore();
+};
+
+TD.DotItem.prototype.connect = function (dotItem) {
+  this.connection = dotItem;
+};
+
+TD.DotItem.prototype.disconnect = function () {
+  this.connection = null;
 };

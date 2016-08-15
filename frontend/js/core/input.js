@@ -4,8 +4,9 @@ var TD = TD || {};
 
 TD.Input = function (element) {
   this.element = element;
-  this.currentCoords = null;
-  this.isDown = false;
+  this.start = null;
+  this.current = null;
+  this._isDown = false;
 
   this._initEvents();
 };
@@ -40,17 +41,18 @@ TD.Input.prototype._getElementCoordinates = function (e) {
 
 TD.Input.prototype._mouseDown = function (e) {
   var cords = this._getElementCoordinates(e);
-  this.currentCoords = cords;
-  this.isDown = true;
+  this.start = cords;
+  this._isDown = true;
 };
 
 TD.Input.prototype._mouseMove = function (e) {
-  if (!this.isDown) {
-    this.currentCoords = null;
+  if (!this._isDown) {
+    this.start = null;
+    this.current = null;
     return;
   }
 
-  this.currentCoords = this._getElementCoordinates(e);
+  this.current = this._getElementCoordinates(e);
 };
 
 TD.Input.prototype._mouseUp = function (e) {

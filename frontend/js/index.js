@@ -29,12 +29,17 @@
   }
 
   var grid = new TD.Grid(gridContent);
+  var startItem = null;
 
   var update = function () {
     window.requestAnimationFrame(update);
 
-    if (input.currentCoords !== null) {
-      grid.itemAt(input.currentCoords.x, input.currentCoords.y).removed = true;
+    if (input.start !== null) {
+      startItem = grid.itemAt(input.start.x, input.start.y);
+    }
+
+    if (input.current !== null && grid.itemAt(input.current.x, input.current.y) !== startItem) {
+      console.log(grid.itemAt(input.current.x, input.current.y));
     }
 
     clear();
