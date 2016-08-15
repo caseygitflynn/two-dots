@@ -9,10 +9,13 @@ TD.COLORS = {
   RED : "#EB4B5D"
 };
 
+TD.DOT_ITEM = 1;
+
 TD.DotItem = function (color) {
   TD.AbstractGridItem.call(this);
   this.color = color;
   this.connection = 1;
+  this.type = "DotItem";
 };
 
 TD.DotItem.prototype = Object.create(TD.AbstractGridItem.prototype);

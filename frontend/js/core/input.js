@@ -40,14 +40,12 @@ TD.Input.prototype._getElementCoordinates = function (e) {
 };
 
 TD.Input.prototype._mouseDown = function (e) {
-  var cords = this._getElementCoordinates(e);
-  this.start = cords;
+  this.current = this._getElementCoordinates(e);
   this._isDown = true;
 };
 
 TD.Input.prototype._mouseMove = function (e) {
   if (!this._isDown) {
-    this.start = null;
     this.current = null;
     return;
   }
@@ -56,6 +54,6 @@ TD.Input.prototype._mouseMove = function (e) {
 };
 
 TD.Input.prototype._mouseUp = function (e) {
-  this.currentCoords = null;
-  this.isDown = false;
+  this.current = null;
+  this._isDown = false;
 };

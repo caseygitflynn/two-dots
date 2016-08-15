@@ -29,21 +29,31 @@
   }
 
   var grid = new TD.Grid(gridContent);
-  var startItem = null;
+  var connections = new TD.Connections();
 
   var update = function () {
     window.requestAnimationFrame(update);
 
-    if (input.start !== null) {
-      startItem = grid.itemAt(input.start.x, input.start.y);
-    }
+    if (input.current !== null) {
+      connections.add(grid.itemAt(input.current.x, input.current.y));
+    } else {
+      if (connections.hasClears()) {
+        if (connections.hasSquare()) {
+          grid.removeAllOfColor(connections.color);
+        } else {
+          grid.removeItems(connections.getClears());
+        }
 
-    if (input.current !== null && grid.itemAt(input.current.x, input.current.y) !== startItem) {
-      console.log(grid.itemAt(input.current.x, input.current.y));
+        console.log(grid.getEmptyCount());
+      }
+
+      connections.reset();
     }
 
     clear();
     grid.draw(ctx);
+    connections.draw(ctx);
+    connections.drawTail(input.current, ctx);
   };
 
   update();

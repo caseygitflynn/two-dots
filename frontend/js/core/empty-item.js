@@ -2,8 +2,11 @@
 
 var TD = TD || {};
 
+TD.EMPTY_ITEM = 0;
+
 TD.EmptyItem = function () {
   TD.AbstractGridItem.call(this);
+  this.type = "EmptyItem";
 };
 
 TD.EmptyItem.prototype = Object.create(TD.AbstractGridItem.prototype);

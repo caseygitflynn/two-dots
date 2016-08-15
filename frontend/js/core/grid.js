@@ -10,9 +10,11 @@ TD.Grid = function (gridContents) {
 };
 
 TD.Grid.prototype.draw = function (ctx) {
-  // this.drawConnections(ctx);
-
   this.eachItem(function (x, y, gridItem) {
+    if (!gridItem) {
+      return;
+    }
+
     ctx.save();
     ctx.translate(x * TD.GRID_SIZE + TD.GRID_SIZE / 2, y * TD.GRID_SIZE + TD.GRID_SIZE / 2);
     gridItem.draw(ctx);
@@ -20,22 +22,50 @@ TD.Grid.prototype.draw = function (ctx) {
   });
 };
 
-TD.Grid.prototype.drawConnections = function (ctx) {
-  this.eachItem(function (x, y, gridItem) {
-    if (typeof gridItem !== "DotItem" && gridItem.connection == null) {
-      return;
-    }
+TD.Grid.prototype.removeItems = function (gridItems) {
+  var removed = 0;
 
-    ctx.save();
-    ctx.translate(x * TD.GRID_SIZE + TD.GRID_SIZE / 2, y * TD.GRID_SIZE + TD.GRID_SIZE / 2);
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(40, 0);
-    ctx.lineWidth = 6;
-    ctx.strokeStyle = gridItem.color;
-    ctx.stroke();
-    ctx.restore();
+  for (var i = 0; i < gridItems.length; i = i + 1) {
+    var gridItem = gridItems[i];
+    this.gridContents[gridItem.x][gridItem.y] = null;
+  }
+
+  this.bubbleEmpty();
+};
+
+TD.Grid.prototype.removeAllOfColor = function (color) {
+  var self = this;
+
+  this.eachItem(function (x, y, gridItem) {
+    if (gridItem.type = "DotItem" && gridItem.color == color) {
+      self.gridContents[x][y] = null;
+    }
   });
+
+  this.bubbleEmpty();
+};
+
+TD.Grid.prototype.getEmptyCount = function () {
+  var empty = 0;
+
+  this.eachItem(function (x, y, gridItem) {
+    if (gridItem === null) {
+      empty++;
+    }
+  });
+
+  return empty;
+};
+
+TD.Grid.prototype.bubbleEmpty = function () {
+  for (var x = 0; x < this.gridContents.length; x = x + 1) {
+    var column = this.gridContents[x];
+    this.gridContents[x].sort(function (a, b) {
+      return b === null ? 1 : 0;
+    });
+  }
+
+  this.updateItemPositions();
 };
 
 TD.Grid.prototype.eachItem = function (callback) {
@@ -48,6 +78,10 @@ TD.Grid.prototype.eachItem = function (callback) {
 
 TD.Grid.prototype.updateItemPositions = function () {
   this.eachItem(function (x, y, gridItem) {
+    if (gridItem == null) {
+      return;
+    }
+
     gridItem.x = x;
     gridItem.y = y;
   });
