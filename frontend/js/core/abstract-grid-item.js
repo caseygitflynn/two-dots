@@ -18,7 +18,7 @@ TD.AbstractGridItem.prototype.copy = function () {
 };
 
 TD.AbstractGridItem.prototype.animateTo = function (x, y) {
-  this.animation = new TD.Animation(this.y, y, 0.2);
+  this.animation = new TD.Animation(this.y, y, 0.5);
   this.x = x;
   var self = this;
   this.animation.onComplete = function () {

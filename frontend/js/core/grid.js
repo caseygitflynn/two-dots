@@ -49,7 +49,6 @@ TD.Grid.prototype.drop = function () {
     for (var y = 0; y < this.gridContents[x].length; y = y + 1) {
       var gridCell = this.gridContents[x][y];
       cellContents[x].push(gridCell.content);
-      gridCell.content = null;
     }
   }
 
@@ -62,12 +61,17 @@ TD.Grid.prototype.drop = function () {
 
   // Refill grid
   for (var x = 0; x < this.gridContents.length; x = x + 1) {
+    var contentY = 0;
     for (var y = 0; y < this.gridContents[x].length; y = y + 1) {
       var gridCell = this.gridContents[x][y];
-      if (cellContents[x][y] !== undefined) {
-        gridCell.setContent(cellContents[x][y]);
-      } else {
-        gridCell.setContent(null);
+      if (gridCell.isOccupiable()) {
+        if (cellContents[x][contentY] !== undefined) {
+          gridCell.setContent(cellContents[x][contentY]);
+        } else {
+          gridCell.setContent(null);
+        }
+
+        contentY++;
       }
     }
   }
@@ -95,7 +99,7 @@ TD.Grid.prototype.getEmptyCount = function () {
   var empty = 0;
 
   this.eachCell(function (x, y, gridCell) {
-    if (gridCell.isEmpty()) {
+    if (gridCell.isEmpty() && gridCell.isOccupiable()) {
       empty++;
     }
   });
@@ -106,7 +110,7 @@ TD.Grid.prototype.getEmptyCount = function () {
 TD.Grid.prototype.fill = function (items) {
   var self = this;
   this.eachCell(function (x, y, gridCell) {
-    if (gridCell.isEmpty()) {
+    if (gridCell.isEmpty() && gridCell.occupiable) {
       gridCell.setContent(items.pop());
     }
   });

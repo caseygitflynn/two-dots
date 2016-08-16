@@ -12,7 +12,8 @@ TD.EmptyItem.prototype.contructor = TD.EmptyItem;
 
 TD.EmptyItem.prototype.draw = function (ctx) {
   ctx.save();
-  // Do nothing
+  ctx.fillStyle = "#DDD";
+  ctx.fillRect(-TD.GRID_SIZE / 2, -TD.GRID_SIZE / 2, TD.GRID_SIZE, TD.GRID_SIZE);
   ctx.restore();
 };
 

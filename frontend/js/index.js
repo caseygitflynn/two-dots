@@ -25,7 +25,13 @@
   for (var x = 0; x < 10; x = x + 1) {
     gridContent.push([]);
     for (var y = 0; y < 10; y = y + 1) {
-      gridContent[x].push(new TD.GridCell(x, y, null));
+      if (y > 2 && y < 5 && x > 2) {
+        var cell = new TD.GridCell(x, y, null);
+        cell.occupiable = false;
+        gridContent[x].push(cell);
+      } else {
+        gridContent[x].push(new TD.GridCell(x, y, null));
+      }
     }
   }
 
