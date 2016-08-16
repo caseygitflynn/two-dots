@@ -33,10 +33,7 @@ TD.Input.prototype._getElementCoordinates = function (e) {
   x -= this.element.offsetLeft;
   y -= this.element.offsetTop;
 
-  return {
-    x : x,
-    y : y,
-  };
+  return TD.Utils.canvasToWorld(x, y);
 };
 
 TD.Input.prototype._mouseDown = function (e) {

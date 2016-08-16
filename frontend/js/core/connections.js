@@ -9,7 +9,7 @@ TD.Connections = function () {
 };
 
 TD.Connections.prototype.add = function (gridItem) {
-  if (!gridItem instanceof TD.DotItem) {
+  if (!(gridItem instanceof TD.DotItem)) {
     return;
   }
 
@@ -48,6 +48,8 @@ TD.Connections.prototype.add = function (gridItem) {
   if (this.color === gridItem.color && this.isNeighbor(this.getEnd(), gridItem)) {
     this.connections.push(gridItem);
   }
+
+  console.log(this.connections);
 
 };
 
@@ -117,11 +119,13 @@ TD.Connections.prototype.draw = function (ctx) {
     var first = this.connections[i];
     var second = this.connections[i + 1];
 
+    var firstCanvasCoords = TD.Utils.worldToCanvas(first.x * TD.GRID_SIZE + TD.GRID_SIZE / 2, first.y * TD.GRID_SIZE + TD.GRID_SIZE / 2);
+    var secondCanvasCoords = TD.Utils.worldToCanvas(second.x * TD.GRID_SIZE + TD.GRID_SIZE / 2, second.y * TD.GRID_SIZE + TD.GRID_SIZE / 2);
+
     ctx.save();
-    ctx.translate(first.x * TD.GRID_SIZE + TD.GRID_SIZE / 2, first.y * TD.GRID_SIZE + TD.GRID_SIZE / 2);
     ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo((second.x - first.x) * TD.GRID_SIZE, (second.y - first.y) * TD.GRID_SIZE);
+    ctx.moveTo(firstCanvasCoords.x, firstCanvasCoords.y);
+    ctx.lineTo(secondCanvasCoords.x, secondCanvasCoords.y);
     ctx.lineWidth = 5;
     ctx.strokeStyle = this.color;
     ctx.stroke();
@@ -135,11 +139,14 @@ TD.Connections.prototype.drawTail = function (position, ctx) {
   }
 
   var end = this.getEnd();
+  
+  var canvasCoordsEnd = TD.Utils.worldToCanvas(end.x * TD.GRID_SIZE + TD.GRID_SIZE / 2, end.y * TD.GRID_SIZE + TD.GRID_SIZE / 2);
+  var canvasCoordsPos = TD.Utils.worldToCanvas(position.x, position.y);
 
   ctx.save();
   ctx.beginPath();
-  ctx.moveTo(end.x * TD.GRID_SIZE + TD.GRID_SIZE / 2, end.y * TD.GRID_SIZE + TD.GRID_SIZE / 2);
-  ctx.lineTo(position.x, position.y);
+  ctx.moveTo(canvasCoordsEnd.x, canvasCoordsEnd.y);
+  ctx.lineTo(canvasCoordsPos.x, canvasCoordsPos.y);
   ctx.lineWidth = 5;
   ctx.strokeStyle = this.color;
   ctx.stroke();

@@ -25,11 +25,7 @@
   for (var x = 0; x < 10; x = x + 1) {
     gridContent.push([]);
     for (var y = 0; y < 10; y = y + 1) {
-      if (x !== 0 && x !== 9 && y !== 9) {
-        gridContent[x].push(null);
-      } else {
-        gridContent[x].push(new TD.EmptyItem());
-      }
+      gridContent[x].push(null);
     }
   }
 
@@ -37,9 +33,16 @@
   grid.fill(randomizer.getItems(grid.getEmptyCount()));
 
   var connections = new TD.Connections();
+  var time = new Date();
+  var current = new Date();
+  var delta = 0;
 
   var update = function () {
     window.requestAnimationFrame(update);
+
+    current = new Date();
+    delta = (current - time) / 1000;
+    time = current;
 
     if (input.current !== null) {
       connections.add(grid.itemAt(input.current.x, input.current.y));
@@ -51,7 +54,7 @@
           grid.removeItems(connections.getClears());
         }
 
-         grid.fill(randomizer.getItems(grid.getEmptyCount()));
+         //grid.fill(randomizer.getItems(grid.getEmptyCount()));
       }
 
       connections.reset();
