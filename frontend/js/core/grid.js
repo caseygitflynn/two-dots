@@ -10,34 +10,83 @@ TD.Grid = function (gridContents) {
 };
 
 TD.Grid.prototype.draw = function (ctx) {
-  this.eachItem(function (x, y, gridItem) {
-    if (!gridItem) {
+  this.eachCell(function (x, y, gridCell) {
+    if (gridCell.isEmpty()) {
       return;
     }
-    var canvasCoords = TD.Utils.worldToCanvas(gridItem.x * TD.GRID_SIZE + TD.GRID_SIZE / 2, gridItem.y * TD.GRID_SIZE + TD.GRID_SIZE / 2);
+
+    var canvasCoords = TD.Utils.worldToCanvas(gridCell.content.x * TD.GRID_SIZE + TD.GRID_SIZE / 2, gridCell.content.y * TD.GRID_SIZE + TD.GRID_SIZE / 2);
 
     ctx.save();
     ctx.translate(canvasCoords.x, canvasCoords.y);
-    gridItem.draw(ctx);
+    gridCell.draw(ctx);
     ctx.restore();
   });
 };
 
-TD.Grid.prototype.removeItems = function (gridItems) {
-  var removed = 0;
+TD.Grid.prototype.animate = function (dt) {
+  this.eachCell(function (x, y, gridCell) {
+    gridCell.update(dt);
+  });
+};
 
+TD.Grid.prototype.isAnimating = function () {
+  var animating = false;
+
+  this.eachCell(function (x, y, gridCell) {
+    animating = animating || gridCell.isAnimating();
+  });
+
+  return animating;
+};
+
+TD.Grid.prototype.drop = function () {
+  var cellContents = [];
+
+  // Copy cell contents
+  for (var x = 0; x < this.gridContents.length; x = x + 1) {
+    cellContents.push([]);
+    for (var y = 0; y < this.gridContents[x].length; y = y + 1) {
+      var gridCell = this.gridContents[x][y];
+      cellContents[x].push(gridCell.content);
+      gridCell.content = null;
+    }
+  }
+
+  // Collapse
+  for (var x = 0; x < cellContents.length; x = x + 1) {
+    cellContents[x] = cellContents[x].filter(function (gridItem) {
+      return gridItem !== null;
+    });
+  }
+
+  // Refill grid
+  for (var x = 0; x < this.gridContents.length; x = x + 1) {
+    for (var y = 0; y < this.gridContents[x].length; y = y + 1) {
+      var gridCell = this.gridContents[x][y];
+      if (cellContents[x][y] !== undefined) {
+        gridCell.setContent(cellContents[x][y]);
+      } else {
+        gridCell.setContent(null);
+      }
+    }
+  }
+};
+
+TD.Grid.prototype.removeItems = function (gridItems) {
   for (var i = 0; i < gridItems.length; i = i + 1) {
     var gridItem = gridItems[i];
-    this.gridContents[gridItem.x][gridItem.y] = null;
+    var gridCell = this.gridContents[gridItem.x][gridItem.y];
+    gridCell.setContent(null);
   }
 };
 
 TD.Grid.prototype.removeAllOfColor = function (color) {
   var self = this;
 
-  this.eachItem(function (x, y, gridItem) {
-    if (gridItem instanceof TD.DotItem && gridItem.color == color) {
-      self.gridContents[x][y] = null;
+  this.eachCell(function (x, y, gridCell) {
+    if ((gridCell.content instanceof TD.DotItem) && gridCell.content.color == color) {
+      gridCell.setContent(null);
     }
   });
 };
@@ -45,8 +94,8 @@ TD.Grid.prototype.removeAllOfColor = function (color) {
 TD.Grid.prototype.getEmptyCount = function () {
   var empty = 0;
 
-  this.eachItem(function (x, y, gridItem) {
-    if (gridItem === null) {
+  this.eachCell(function (x, y, gridCell) {
+    if (gridCell.isEmpty()) {
       empty++;
     }
   });
@@ -56,16 +105,16 @@ TD.Grid.prototype.getEmptyCount = function () {
 
 TD.Grid.prototype.fill = function (items) {
   var self = this;
-  this.eachItem(function (x, y, gridItem) {
-    if (gridItem == null) {
-      self.gridContents[x][y] = items.pop();
+  this.eachCell(function (x, y, gridCell) {
+    if (gridCell.isEmpty()) {
+      gridCell.setContent(items.pop());
     }
   });
 
-  this.updateItemPositions();
+  this.updateItemPositions(true);
 };
 
-TD.Grid.prototype.eachItem = function (callback) {
+TD.Grid.prototype.eachCell = function (callback) {
   for (var x = 0; x < this.gridContents.length; x = x + 1) {
     for (var y = 0; y < this.gridContents[x].length; y = y + 1) {
       callback(x, y, this.gridContents[x][y]);
@@ -73,14 +122,16 @@ TD.Grid.prototype.eachItem = function (callback) {
   }
 };
 
-TD.Grid.prototype.updateItemPositions = function () {
-  this.eachItem(function (x, y, gridItem) {
-    if (gridItem == null) {
-      return;
+TD.Grid.prototype.updateItemPositions = function (animated) {
+  this.eachCell(function (x, y, gridCell) {
+    if (!gridCell.isEmpty()) {
+      if (animated === true) {
+        gridCell.content.animateTo(x, y);
+      } else {
+        gridCell.content.x = x;
+        gridCell.content.y = y;
+      }
     }
-
-    gridItem.x = x;
-    gridItem.y = y;
   });
 };
 
@@ -88,8 +139,10 @@ TD.Grid.prototype.itemAt = function (x, y) {
   var gridX = Math.floor(x / TD.GRID_SIZE);
   var gridY = Math.floor(y / TD.GRID_SIZE);
 
-  if (this.gridContents[gridX][gridY]) {
-    return this.gridContents[gridX][gridY];
+  var gridCell = this.gridContents[gridX][gridY];
+
+  if (!gridCell.isEmpty()) {
+    return gridCell.content;
   }
 
   return null;

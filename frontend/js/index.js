@@ -25,7 +25,7 @@
   for (var x = 0; x < 10; x = x + 1) {
     gridContent.push([]);
     for (var y = 0; y < 10; y = y + 1) {
-      gridContent[x].push(null);
+      gridContent[x].push(new TD.GridCell(x, y, null));
     }
   }
 
@@ -44,20 +44,26 @@
     delta = (current - time) / 1000;
     time = current;
 
-    if (input.current !== null) {
-      connections.add(grid.itemAt(input.current.x, input.current.y));
-    } else {
-      if (connections.hasClears()) {
-        if (connections.hasSquare()) {
-          grid.removeAllOfColor(connections.color);
-        } else {
-          grid.removeItems(connections.getClears());
+    if (!grid.isAnimating()) {
+      if (input.current !== null) {
+        connections.add(grid.itemAt(input.current.x, input.current.y));
+      } else {
+        if (connections.hasClears()) {
+          if (connections.hasSquare()) {
+            grid.removeAllOfColor(connections.color);
+          } else {
+            grid.removeItems(connections.getClears());
+          }
+
+          var refillCount = grid.getEmptyCount();
+          grid.drop();
+          grid.fill(randomizer.getItems(refillCount));
         }
 
-         //grid.fill(randomizer.getItems(grid.getEmptyCount()));
+        connections.reset();
       }
-
-      connections.reset();
+    } else {
+      grid.animate(delta);
     }
 
     clear();

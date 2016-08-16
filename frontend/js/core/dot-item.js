@@ -12,7 +12,6 @@ TD.COLORS = {
 TD.DotItem = function (color) {
   TD.AbstractGridItem.call(this);
   this.color = color;
-  this.type = "DotItem";
 };
 
 TD.DotItem.prototype = Object.create(TD.AbstractGridItem.prototype);

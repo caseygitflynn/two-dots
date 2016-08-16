@@ -48,9 +48,6 @@ TD.Connections.prototype.add = function (gridItem) {
   if (this.color === gridItem.color && this.isNeighbor(this.getEnd(), gridItem)) {
     this.connections.push(gridItem);
   }
-
-  console.log(this.connections);
-
 };
 
 TD.Connections.prototype.getRoot = function () {
@@ -139,7 +136,7 @@ TD.Connections.prototype.drawTail = function (position, ctx) {
   }
 
   var end = this.getEnd();
-  
+
   var canvasCoordsEnd = TD.Utils.worldToCanvas(end.x * TD.GRID_SIZE + TD.GRID_SIZE / 2, end.y * TD.GRID_SIZE + TD.GRID_SIZE / 2);
   var canvasCoordsPos = TD.Utils.worldToCanvas(position.x, position.y);
 
