@@ -31,6 +31,8 @@ TD.Game.prototype.loop = function () {
   window.requestAnimationFrame(this.loop.bind(this));
   this.clock.tick();
 
+  this.grid.update(this.clock.delta);
+
   if (!this.grid.isAnimating()) {
     if (this.input.current !== null) {
       this.connections.add(this.grid.itemAt(this.input.current.x, this.input.current.y));
@@ -45,12 +47,9 @@ TD.Game.prototype.loop = function () {
         var refillCount = this.grid.getEmptyCount();
         this.grid.drop();
         this.grid.fill(this.itemRandomizer.getItems(refillCount));
+        this.connections.reset();
       }
-
-      this.connections.reset();
     }
-  } else {
-    this.grid.animate(this.clock.delta);
   }
 
   this.clear();

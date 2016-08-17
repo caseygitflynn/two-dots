@@ -4,7 +4,7 @@ var TD = TD || {};
 
 TD.GRID_SIZE = 40;
 
-TD.Grid = function (cells) {
+TD.Grid = function (cells, items) {
   this.cells = cells;
   this.items = TD.Utils.gridOfSize(10, 20);
   this.updateItemPositions();
@@ -43,7 +43,7 @@ TD.Grid.prototype.drawItems = function (ctx) {
   });
 };
 
-TD.Grid.prototype.animate = function (dt) {
+TD.Grid.prototype.update = function (dt) {
   TD.Utils.gridEach(this.items, function (x, y, item) {
     if (item !== null) {
       item.update(dt);

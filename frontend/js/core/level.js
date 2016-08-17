@@ -40,7 +40,7 @@ TD.Level.prototype._fillCells = function (cells) {
     var cellX = TD.COLS - x - 1;
 
     if (cell !== 0) {
-      self.cells[y][cellX] = new TD.GridCell();
+      self.cells[y][cellX] = new TD.PlainCell();
     } else {
       self.cells[y][cellX] = null;
     }
@@ -56,4 +56,6 @@ TD.Level.prototype._fillItemSet = function (itemTypes) {
 
     this.itemSet.push(new TD.DotItem(type));
   }
+
+  this.itemSet.push(new TD.AnchorItem());
 };

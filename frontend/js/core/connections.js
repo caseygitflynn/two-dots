@@ -131,7 +131,7 @@ TD.Connections.prototype.draw = function (ctx) {
 };
 
 TD.Connections.prototype.drawTail = function (position, ctx) {
-  if (this.connections.length < 1 || this.pathClosed) {
+  if (position == null || this.connections.length < 1 || this.pathClosed) {
     return;
   }
 
