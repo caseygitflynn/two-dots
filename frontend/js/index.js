@@ -14,7 +14,26 @@
 
   var input = new TD.Input(canvas);
 
-  var gridContent = [];
+  var cells = [];
+  for (var x = 0; x < 10; x = x + 1) {
+    cells.push([]);
+    for (var y = 0; y < 10; y = y + 1) {
+      if ((y == 5) || (x == 0 && (y == 0 || y == 9)) || (x == 9 && (y == 0 || y == 9))) {
+        cells[x].push(null);
+      } else {
+        cells[x].push(new TD.GridCell());
+      }
+    }
+  }
+
+  var items = [];
+  for (var x = 0; x < 10; x = x + 1) {
+    items.push([]);
+    for (var y = 0; y < 20; y = y + 1) {
+      items[x].push(null);
+    }
+  }
+
   var randomizer = new TD.Randomizer([
     new TD.DotItem(TD.COLORS.YELLOW),
     new TD.DotItem(TD.COLORS.RED),
@@ -22,20 +41,7 @@
     new TD.DotItem(TD.COLORS.LIGHT_BLUE),
   ]);
 
-  for (var x = 0; x < 10; x = x + 1) {
-    gridContent.push([]);
-    for (var y = 0; y < 10; y = y + 1) {
-      if (y > 2 && y < 5 && x > 2) {
-        var cell = new TD.GridCell(x, y, null);
-        cell.occupiable = false;
-        gridContent[x].push(cell);
-      } else {
-        gridContent[x].push(new TD.GridCell(x, y, null));
-      }
-    }
-  }
-
-  var grid = new TD.Grid(gridContent);
+  var grid = new TD.Grid(cells, items);
   grid.fill(randomizer.getItems(grid.getEmptyCount()));
 
   var connections = new TD.Connections();
