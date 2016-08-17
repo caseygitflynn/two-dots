@@ -4,9 +4,9 @@ var TD = TD || {};
 
 TD.GRID_SIZE = 40;
 
-TD.Grid = function (cells, items) {
+TD.Grid = function (cells) {
   this.cells = cells;
-  this.items = items;
+  this.items = TD.Utils.gridOfSize(10, 20);
   this.updateItemPositions();
 };
 

@@ -29,3 +29,16 @@ TD.Utils.gridEach = function (grid, callback) {
     }
   }
 };
+
+TD.Utils.gridOfSize = function (rows, cols) {
+  var grid = [];
+
+  for (var x = 0; x < rows; x = x + 1) {
+    grid.push([]);
+    for (var y = 0; y < cols; y = y + 1) {
+      grid[x].push(null);
+    }
+  }
+
+  return grid;
+};

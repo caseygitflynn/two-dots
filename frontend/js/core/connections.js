@@ -124,7 +124,7 @@ TD.Connections.prototype.draw = function (ctx) {
     ctx.moveTo(firstCanvasCoords.x, firstCanvasCoords.y);
     ctx.lineTo(secondCanvasCoords.x, secondCanvasCoords.y);
     ctx.lineWidth = 5;
-    ctx.strokeStyle = this.color;
+    ctx.strokeStyle = TD.COLORS[this.color];
     ctx.stroke();
     ctx.restore();
   }
@@ -145,7 +145,7 @@ TD.Connections.prototype.drawTail = function (position, ctx) {
   ctx.moveTo(canvasCoordsEnd.x, canvasCoordsEnd.y);
   ctx.lineTo(canvasCoordsPos.x, canvasCoordsPos.y);
   ctx.lineWidth = 5;
-  ctx.strokeStyle = this.color;
+  ctx.strokeStyle = TD.COLORS[this.color];
   ctx.stroke();
   ctx.restore();
 };
