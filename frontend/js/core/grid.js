@@ -11,8 +11,8 @@ TD.Grid = function (cells, items) {
 };
 
 TD.Grid.prototype.draw = function (ctx) {
-  this.drawCells(ctx);
   this.drawItems(ctx);
+  this.drawCells(ctx);
 };
 
 TD.Grid.prototype.drawCells = function (ctx) {
@@ -94,7 +94,7 @@ TD.Grid.prototype.cellIsFree = function (x, y) {
 TD.Grid.prototype.removeItems = function (gridItems) {
   for (var i = 0; i < gridItems.length; i = i + 1) {
     var gridItem = gridItems[i];
-    this.items[gridItem.x][gridItem.y] = null;
+    this.clearCellAt(gridItem.x, gridItem.y);
   }
 };
 
@@ -103,9 +103,14 @@ TD.Grid.prototype.removeAllOfColor = function (color) {
 
   TD.Utils.gridEach(this.items, function (x, y, item) {
     if ((item instanceof TD.DotItem) && item.color == color) {
-      self.items[x][y] = null;
+      self.clearCellAt(x, y);
     }
   });
+};
+
+TD.Grid.prototype.clearCellAt = function (x, y) {
+  this.items[x][y] = null;
+  this.cells[x][y].onDotClear();
 };
 
 TD.Grid.prototype.getEmptyCount = function () {

@@ -39,15 +39,24 @@ TD.Level.prototype._fillCells = function (cells) {
   TD.Utils.gridEach(cells, function (x, y, cell) {
     var cellX = TD.COLS - x - 1;
 
-    if (cell !== 0) {
-      self.cells[y][cellX] = new TD.PlainCell();
-    } else {
-      self.cells[y][cellX] = new TD.EmptyCell();
-    }
+
+    switch (cell) {
+      case 0 :
+        self.cells[y][cellX] = new TD.EmptyCell();
+        break;
+      case 1 :
+        self.cells[y][cellX] = new TD.PlainCell();
+        break;
+      case 2 :
+        self.cells[y][cellX] = new TD.IceCell();
+        break;
+      default :
+        self.cells[y][cellX] = new TD.PlainCell();
+        break;
+    } 
 
   });
 
-  console.log(this.cells);
 };
 
 TD.Level.prototype._fillItemSet = function (itemTypes) {

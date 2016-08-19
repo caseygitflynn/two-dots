@@ -53,7 +53,7 @@ TD.Game.prototype.loop = function () {
   }
 
   this.clear();
-  this.grid.draw(this.ctx);
   this.connections.draw(this.ctx);
   this.connections.drawTail(this.input.current, this.ctx);
+  this.grid.draw(this.ctx);
 };
