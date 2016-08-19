@@ -3,6 +3,7 @@
 var TD = TD || {};
 
 TD.AbstractGridCell = function () {
+  this.occupiable = true;
 };
 
 TD.AbstractGridCell.prototype.draw = function (ctx) {

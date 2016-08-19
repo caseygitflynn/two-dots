@@ -42,10 +42,12 @@ TD.Level.prototype._fillCells = function (cells) {
     if (cell !== 0) {
       self.cells[y][cellX] = new TD.PlainCell();
     } else {
-      self.cells[y][cellX] = null;
+      self.cells[y][cellX] = new TD.EmptyCell();
     }
 
   });
+
+  console.log(this.cells);
 };
 
 TD.Level.prototype._fillItemSet = function (itemTypes) {

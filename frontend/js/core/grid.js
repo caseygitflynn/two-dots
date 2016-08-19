@@ -68,7 +68,7 @@ TD.Grid.prototype.isAnimating = function () {
 TD.Grid.prototype.drop = function () {
   for (var x = 0; x < this.items.length; x = x + 1) {
     for (var y = 0; y < this.items[x].length; y = y + 1) {
-      if (this.cells[x][y] !== null && this.items[x][y] == null) {
+      if (this.cellIsFree(x, y) === true && this.items[x][y] == null) {
         for (var lookup = y + 1; lookup < this.items[x].length; lookup = lookup + 1) {
           var item = this.items[x][lookup];
 
@@ -83,6 +83,12 @@ TD.Grid.prototype.drop = function () {
   }
 
   this.updateItemPositions(true);
+};
+
+TD.Grid.prototype.cellIsFree = function (x, y) {
+  var cell = this.cells[x][y];
+
+  return (cell !== undefined && cell.occupiable === true);
 };
 
 TD.Grid.prototype.removeItems = function (gridItems) {
@@ -107,7 +113,7 @@ TD.Grid.prototype.getEmptyCount = function () {
   var self = this;
 
   TD.Utils.gridEach(this.items, function (x, y, item) {
-    if(self.cells[x][y] !== null && item == null) {
+    if(self.cellIsFree(x, y) === true && item == null) {
       empty++;
     }
   });
@@ -118,7 +124,7 @@ TD.Grid.prototype.getEmptyCount = function () {
 TD.Grid.prototype.fill = function (newItems) {
   var self = this;
   TD.Utils.gridEach(this.items, function (x, y, item) {
-    if (self.cells[x][y] !== null && item == null) {
+    if (self.cellIsFree(x, y) === true && item == null) {
       self.items[x][y] = newItems.pop();
     }
   });
